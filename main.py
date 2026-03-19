@@ -13,30 +13,30 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-    model = joblib.load("diabetes_model (1).pkl")
+model = joblib.load("diabetes_model (1).pkl")
 
 class Vitals(BaseModel):
     glucose: float
     systolic: float
     diastolic: float
     bmi: float
-    age: int
-    pregnancies: float = 0
-    insulin: float = 0
-    skin_thickness: float = 0
-    diabetes_pedigree: float = 0.0
+    age: float
+    pregnancies: float
+    insulin: float
+    skin_thickness: float
+    diabetes_pedigree: float
 
 @app.get("/")
 def root():
-    return {"message": "GlucoGuard API is running!", "accuracy": "75.32%"}
+    return {"message": "GlucoGuard API is running"}
 
 @app.post("/predict")
-def predict_diabetes(vitals: Vitals):
-    glucose_bmi     = vitals.glucose * vitals.bmi
-    age_glucose     = vitals.age * vitals.glucose
-    bp_ratio        = vitals.systolic / (vitals.bmi + 0.001)
-    insulin_glucose = vitals.insulin / (vitals.glucose + 0.001)
-    bmi_age         = vitals.bmi * vitals.age
+def predict(vitals: Vitals):
+    glucose_bmi = vitals.glucose * vitals.bmi
+    age_glucose = vitals.age * vitals.glucose
+    bp_ratio = vitals.systolic / (vitals.diastolic + 1)
+    insulin_glucose = vitals.insulin / (vitals.glucose + 1)
+    bmi_age = vitals.bmi * vitals.age
 
     features = np.array([[
         vitals.glucose,
