@@ -13,7 +13,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-model = joblib.load("diabetes_model.pkl")
+    model = joblib.load("diabetes_model (1).pkl")
 
 class Vitals(BaseModel):
     glucose: float
